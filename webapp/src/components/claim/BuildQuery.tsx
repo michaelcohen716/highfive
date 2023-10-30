@@ -10,11 +10,11 @@ import ClaimAirdropClient from "./ClaimAirdropClient";
 export default function BuildQuery({
   inputs,
   callback,
-  airdropAbi,
+  highFiveAbi,
 }: {
   inputs: CircuitInputs,
   callback: AxiomV2Callback,
-  airdropAbi: any[],
+  highFiveAbi: any[],
 }) {
   const { builtQuery, payment, setParams } = useAxiomCircuit();
 
@@ -30,5 +30,5 @@ export default function BuildQuery({
     );
   }
 
-  return <ClaimAirdropClient airdropAbi={airdropAbi} />;
+  return <ClaimAirdropClient highFiveAbi={highFiveAbi} />;
 }

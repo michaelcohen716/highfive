@@ -30,6 +30,13 @@ export default async function Home({ searchParams }: PageProps) {
         label="Check Eligibility"
         href={"/check?" + forwardSearchParams(searchParams)}
       />;
+      // <div>
+      //   <label>Recipient</label>
+      //   <input value="0x231Ae5AdCcC2dbfF1B457CAf2A3A74Ac7DDC960E" />
+      //   <label>Collection</label>
+      //   <input value="0x38e44812137319293460Cb643F4DA05e4d03Dfa8" />
+      //   <button onClick={() }>generate</button>
+      // </div>
     }
     return <ConnectWallet connected={connected} />;
   }

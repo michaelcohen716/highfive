@@ -1,6 +1,7 @@
 import BuildQuery from "@/components/claim/BuildQuery";
 import Title from "@/components/ui/Title";
-import autoAirdropJson from '@/lib/abi/AutonomousAirdrop.json';
+// import autoAirdropJson from '@/lib/abi/AutonomousAirdrop.json';
+import highFiveJson from '@/lib/abi/HighFive.json';
 import { CircuitInputs } from "@/lib/circuit";
 import { publicClient } from "@/lib/viemClient";
 import { Constants } from "@/shared/constants";
@@ -20,39 +21,49 @@ interface SearchParams {
 }
 
 export default async function Claim({ searchParams }: PageProps) {
+  // sender
   const connected = searchParams?.connected as string ?? "";
-  const txHash = searchParams?.txHash as string ?? "";
-  const blockNumber = searchParams?.blockNumber as string ?? "";
+  const recipient = searchParams?.recipient as string ?? "";
+  const txBlockNumber0 = searchParams?.txBlockNumber0 as string ?? "";
+  const txIdx0 = searchParams?.txIdx0 as string ?? "";
+  const txBlockNumber1 = searchParams?.txBlockNumber1 as string ?? "";
+  const txIdx1 = searchParams?.txIdx1 as string ?? "";
   const logIdx = searchParams?.logIdx as string ?? "";
 
-  const tx = await publicClient.getTransaction({
-    hash: txHash as `0x${string}`,
-  });
-  const txIdx = tx.transactionIndex.toString();
+  console.log("searchparams",searchParams)
+
+  // const tx = await publicClient.getTransaction({
+  //   hash: txHash as `0x${string}`,
+  // });
+  // const txIdx = tx.transactionIndex.toString();
 
   const inputs: CircuitInputs = {
-    blockNumber: Number(blockNumber),
-    txIdx: Number(txIdx),
-    logIdx: Number(logIdx),
+    sender: String(connected),
+    recipient: String(recipient),
+    txBlockNumber0: Number(txBlockNumber0),
+    txIdx0: Number(txIdx0),
+    txBlockNumber1:Number(txBlockNumber1),
+    txIdx1: Number(txIdx1),
+    logIdx: Number(logIdx)
   }
   const callback: AxiomV2Callback = {
-    target: Constants.AUTO_AIRDROP_ADDR as `0x${string}`,
+    target: Constants.HIGH_FIVE_ADDR as `0x${string}`,
     extraData: bytes32(connected),
   }
 
   return (
     <>
       <Title>
-        Claim airdrop
+        Send HighFive
       </Title>
       <div className="text-center">
-        Click the buttom below to claim your UselessToken airdrop. UselessToken is purely used for testing purposes and holds no financial or nonmonetary value.
+        Click below to highfive
       </div>
       <div className="flex flex-col gap-2 items-center">
         <BuildQuery
           inputs={inputs}
           callback={callback}
-          airdropAbi={autoAirdropJson.abi}
+          highFiveAbi={highFiveJson.abi}
         />
       </div>
     </>

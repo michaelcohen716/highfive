@@ -2,7 +2,6 @@
 pragma solidity 0.8.19;
 
 import { AxiomV2Client } from './AxiomV2Client.sol';
-// import { IERC20 } from '@openzeppelin-contracts/token/ERC20/IERC20.sol';
 import { Ownable } from '@openzeppelin-contracts/access/Ownable.sol';
 
 contract HighFive is AxiomV2Client, Ownable {
@@ -36,12 +35,11 @@ contract HighFive is AxiomV2Client, Ownable {
 
     function _axiomV2Callback(
         uint64,
-        // uint64 sourceChainId,
         address callerAddr,
-        bytes32 querySchema,
-        uint256 queryId,
+        bytes32,
+        uint256,
         bytes32[] calldata axiomResults,
-        bytes calldata extraData
+        bytes calldata
     ) internal virtual override {
         // todo: require txs are from prior to HighFive deployment block
         // or just require recipient's mint to be before block
