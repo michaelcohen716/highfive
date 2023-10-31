@@ -17,9 +17,9 @@ import { useAxiomCircuit } from '@axiom-crypto/react';
 import { ethers } from "ethers";
 
 export default function ClaimAirdropClient({
-  airdropAbi,
+  highFiveAbi,
 }: {
-  airdropAbi: any[],
+  highFiveAbi: any[],
 }) {
   const { address } = useAccount();
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function ClaimAirdropClient({
 
   const axiomQueryAbi = axiom.getAxiomQueryAbi();
   const axiomQueryAddress = axiom.getAxiomQueryAddress();
-
+  console.log("querySchema", builtQuery?.querySchema)
   const claimParams = [
     builtQuery?.sourceChainId,
     builtQuery?.dataQueryHash,
@@ -52,13 +52,13 @@ export default function ClaimAirdropClient({
   const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 
   // Check that the user has not claimed the airdrop yet
-  const { data: hasClaimed, isLoading: hasClaimedLoading } = useContractRead({
-    address: Constants.AUTO_AIRDROP_ADDR as `0x${string}`,
-    abi: airdropAbi,
-    functionName: 'hasClaimed',
-    args: [address],
-  });
-  console.log("hasClaimed?", hasClaimed);
+  // const { data: hasClaimed, isLoading: hasClaimedLoading } = useContractRead({
+  //   address: Constants.HIGH_FIVE_ADDR as `0x${string}`,
+  //   abi: highFiveAbi,
+  //   functionName: 'hasClaimed',
+  //   args: [address],
+  // });
+  // console.log("hasClaimed?", hasClaimed);
 
   useEffect(() => {
     if (isSuccess) {
@@ -79,12 +79,13 @@ export default function ClaimAirdropClient({
   }, [isError, router, address]);
 
   // Monitor contract for `ClaimAirdrop` or `ClaimAirdropError` events
+  // Monitor contract for `HighFived`
   useContractEvent({
-    address: Constants.AUTO_AIRDROP_ADDR as `0x${string}`,
-    abi: airdropAbi,
-    eventName: 'ClaimAirdrop',
+    address: Constants.HIGH_FIVE_ADDR as `0x${string}`,
+    abi: highFiveAbi,
+    eventName: 'HighFived',
     listener(log) {
-      console.log("Claim airdrop success");
+      console.log("HighFive success");
       console.log(log);
       proofGeneratedAction();
     },
@@ -108,9 +109,9 @@ export default function ClaimAirdropClient({
     if (isLoading) {
       return "Confrm transaction in wallet...";
     }
-    if (!!hasClaimed) {
-      return "Airdrop already claimed"
-    }
+    // if (!!hasClaimed) {
+    //   return "Airdrop already claimed"
+    // }
     return "Claim 100 UT";
   }
 
@@ -132,7 +133,7 @@ export default function ClaimAirdropClient({
   return (
     <div className="flex flex-col items-center gap-2">
       <Button
-        disabled={isLoading || isSuccess || !!hasClaimed}
+        disabled={isLoading || isSuccess}
         onClick={() => write?.()}
       >
         {renderButtonText()}
