@@ -21,6 +21,7 @@ export default function BuildQuery({
   useEffect(() => {
     setParams(inputs, callback);
   }, [setParams, inputs, callback]);
+  console.log('builtQuery', builtQuery)
 
   if (!builtQuery || !payment) {
     return (

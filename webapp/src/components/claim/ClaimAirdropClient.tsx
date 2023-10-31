@@ -28,7 +28,7 @@ export default function ClaimAirdropClient({
 
   const axiomQueryAbi = axiom.getAxiomQueryAbi();
   const axiomQueryAddress = axiom.getAxiomQueryAddress();
-
+  console.log("querySchema", builtQuery?.querySchema)
   const claimParams = [
     builtQuery?.sourceChainId,
     builtQuery?.dataQueryHash,
